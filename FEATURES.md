@@ -23,7 +23,7 @@ The app is a full-featured outdoor and web map portal for [Freemap Slovakia](htt
 
 ## 2. Tools
 
-- **Route planner (R):** Start/finish/midpoints, transport types (car, car 4WD, foot, hiking, bike, MTB, racing bike, motorcycle; OSRM and GraphHopper), modes (ordered route, visiting places, roundtrip, isochrones), alternatives, elevation profile, “route from/to here” in context menu.
+- **Route planner (R):** Start/finish/midpoints, transport types (car, car 4WD, foot, hiking, bike, MTB, racing bike, motorcycle; OSRM and GraphHopper), modes (ordered route, visiting places, roundtrip, isochrones), alternatives, elevation profile, "route from/to here" in context menu.
 - **Objects / POIs (O):** Search and display points of interest (OpenStreetMap/Overpass).
 - **Drawing:** **Points (P)**, **Lines (L)**, **Polygons (N)**; selection, edit, delete, convert search/route to drawing; **Project point** (distance + azimuth from selected point); drawing properties (label, color, width); **Predefined drawing properties** modal (default color/width, apply to all); measurement (distance, area, point elevation).
 - **Track viewer (G):** Load/view GPX, elevation profile, upload track, download track.
@@ -36,36 +36,48 @@ The app is a full-featured outdoor and web map portal for [Freemap Slovakia](htt
 
 - **OSM/Overpass:** Two Overpass queries (e.g. `nwr(around:33,...)` and `is_in(...)`) return nodes/ways/relations near the click; results shown with full **object details** (tags, open in OSM, history, edit in JOSM) via `ObjectDetails` and search results.
 - **Nominatim reverse geocoding:** Optional reverse geocoding at click (display name, GeoJSON, OSM id) as another result source.
-- **WMS GetFeatureInfo:** For each **active WMS layer** (integrated or custom), a **GetFeatureInfo** request is sent at the click (WMS 1.3.0, `INFO_FORMAT=application/geo+json`, pixel position and BBOX). Returned features are shown as search results with **WMS-fetched details**: source `wms:<layerType>`, generic name (e.g. layer name), GeoJSON geometry (or point at click if no geometry), and optional property-based ID (`FeatureId` type `wms` with map, property, id/seq). **Map details menu** lets users include/exclude sources: Nominatim reverse, Overpass nearby, Overpass surrounding, and each active WMS layer (e.g. “Cadastre (WMS)”).
-- **Source display:** `SourceName` component shows human-readable source (e.g. “WMS Cadastre”). Legend modal shows WMS layer legends when WMS layers are active.
+- **WMS GetFeatureInfo:** For each **active WMS layer** (integrated or custom), a **GetFeatureInfo** request is sent at the click (WMS 1.3.0, `INFO_FORMAT=application/geo+json`, pixel position and BBOX). Returned features are shown as search results with **WMS-fetched details**: source `wms:<layerType>`, generic name (e.g. layer name), GeoJSON geometry (or point at click if no geometry), and optional property-based ID (`FeatureId` type `wms` with map, property, id/seq). **Map details menu** lets users include/exclude sources: Nominatim reverse, Overpass nearby, Overpass surrounding, and each active WMS layer (e.g. "Cadastre (WMS)").
+- **Source display:** `SourceName` component shows human-readable source (e.g. "WMS Cadastre"). Legend modal shows WMS layer legends when WMS layers are active.
 
 ---
 
 ## 4. Search
 
-- Search by name and by POI category; results on map; open in external app; “route from/to here” and “convert to drawing” from search. Results can be OSM or **WMS** (with `source` `wms:<type>` and optional shape/icon for WMS results).
+- Search by name and by POI category; results on map; open in external app; "route from/to here" and "convert to drawing" from search. Results can be OSM or **WMS** (with `source` `wms:<type>` and optional shape/icon for WMS results).
 
 ---
 
 ## 5. Gallery / photos
 
-- Photo layer overlay; filter; upload (meta: title, description, position, azimuth, takenAt, tags, premium); viewer with comments, rating, “show on map”, 360° (Pannellum); edit/delete; colorize by (author, rating, date, season, premium); show direction; ordering (last/first uploaded, by rating, by comment); recent tags; make all my photos premium/free; gallery emails setting.
+- Photo layer overlay; filter; upload (meta: title, description, position, azimuth, takenAt, tags, premium); viewer with comments, rating, "show on map", 360° (Pannellum); edit/delete; colorize by (author, rating, date, season, premium); show direction; ordering (last/first uploaded, by rating, by comment); recent tags; make all my photos premium/free; gallery emails setting.
 
 ---
 
 ## 6. Live tracking
 
-- “My tracking” and “Watched devices”; devices and access tokens; tracked devices on map; show line/points; WebSocket updates; integration with “My maps” (clear map).
+- "My tracking" and "Watched devices"; devices and access tokens; tracked devices on map; show line/points; WebSocket updates; integration with "My maps" (clear map).
 
 ---
 
-## 7. Custom / saved maps
+## 7. Sharing
 
-- Save current map configuration (layers, center, zoom, drawing, route, track, etc.) as “My maps”; load, delete, list; persisted (e.g. IndexedDB).
+- **URL persistence:** The current map state is reflected in the page URL (when not viewing a saved map). User-added features and view are encoded so that **copying the URL and sending it to someone else** reproduces the same map: position, zoom, active layers (including custom layers), **drawing points and lines** (coordinates, labels, colors, line width), **planned route** (waypoints, transport type, mode, milestones, roundtrip/isochrone params), **track viewer** (GPX by UID or URL, colorize option), search highlights (OSM object IDs), gallery filter, changesets filters, tracked devices, active tool, and object selection. Custom layer definitions in use are also stored in the URL.
+- **Uploaded GPX saved and shareable:** Uploaded GPX files can be **saved to the server** (POST `/tracklogs`); the server returns a **track UID**. That UID is stored in the URL (`track-uid=…`). **Sharing the URL** lets others open the same track: when they load the link, the app fetches the GPX from the server by UID and displays it. Users can also load a track from an external URL (`gpx-url=…`), which is likewise reflected in the URL and can be shared. After uploading, a toast prompts the user to share the link.
+- **Copy page URL:** The "Copy page URL" action (e.g. in the "Open in…" / external app menu) copies the current page URL to the clipboard so users can share the current view and all persisted state with others.
+- Sharing is thus link-based: anyone opening the link sees the same background, layers, drawings, route, track, and other state the creator had (subject to backend availability for tracks and saved maps).
 
 ---
 
-## 8. Export & download
+## 8. Saved maps (personal map sets)
+
+- **Save user-added features to named map sets:** Users can save the current map state to a **saved map** (personal map set) on the server: **drawing** (points and lines with coordinates, labels, colors), **planned route** (waypoints, transport, mode, milestones), **track viewer** (GPX, colorize), **live tracking** (watched devices, show line/points), **object selection**, **gallery filter**, **map view** (center, zoom, layers, custom layers, shading). Each saved map has a name and can be updated or deleted.
+- **Recall later:** Saved maps are listed in the **My maps** modal. Loading a saved map restores all of the above (background layers, position, and all user-added content). Option to "load including saved background map and its position" when opening a map.
+- **Requires login:** Saving and loading personal map sets is tied to the user account (backend `/maps` API); listing, load, save (create/update), and delete are available from the My maps UI.
+- When a saved map is active, its id is reflected in the URL (`id=…`); the rest of the URL is not used for history (state is taken from the loaded map set). Saving updates the current map set or creates a new one.
+
+---
+
+## 9. Export & download
 
 - **Export map features:** Export to GPX or GeoJSON to download, Google Drive, Dropbox, or Garmin; choose layers (planned route ± stops, objects, pictures, drawing lines/areas/points, tracking, GPX, search).
 - **Map export:** Export visible map as PNG/JPEG/SVG/PDF with options (contours, shaded relief, trails, drawing, planned route, track, scale, area).
@@ -73,32 +85,32 @@ The app is a full-featured outdoor and web map portal for [Freemap Slovakia](htt
 
 ---
 
-## 9. Authentication & account
+## 10. Authentication & account
 
 - Login via OpenStreetMap, OpenStreetMap OAuth2, Google, Garmin, Garmin OAuth2, Facebook; logout; disconnect providers; account modal (profile, settings).
 - **Premium:** Premium activation, buy credits, credit system; premium-only layers/zoom; premium photos.
 
 ---
 
-## 10. Offline / caching
+## 11. Offline / caching
 
 - **Offline submenu** (main menu): **Cache mode** – Network only, Network first, Cache first, Cache only. **Caching active** toggle; **Clear cache**. Service worker (`sw.ts`) uses `CacheMode` (from idb-keyval) for fetch strategy. `cache.ts`: `setCacheMode`, `setCachingActive`, `clearCache`, `cacheLocal` (e.g. assets-manifest). Offline-related UI and cache existence state in `MainMenuButton`.
 
 ---
 
-## 11. Settings & preferences
+## 12. Settings & preferences
 
-- Language (i18n: sk, en, cs, de, pl, it, hu, etc.); cookie consent; home location (for route planner); map layer settings; **custom map layers** (tile, WMS, MapLibre); **layer shortcuts** (record key in Map settings); “locate me”; drawing color/width; **Predefined drawing properties** modal for default style.
+- Language (i18n: sk, en, cs, de, pl, it, hu, etc.); cookie consent; home location (for route planner); map layer settings; **custom map layers** (tile, WMS, MapLibre); **layer shortcuts** (record key in Map settings); "locate me"; drawing color/width; **Predefined drawing properties** modal for default style.
 
 ---
 
-## 12. Modals & UI
+## 13. Modals & UI
 
 - About, Account, Buy credits, Download map, Drawing properties, **Predefined drawing properties**, Embed map, Export map, Export map features, Gallery filter, Gallery upload, Legend (outdoor/standard; includes **WMS layer legends** when WMS active), Login, Map settings, My maps, Premium activation, Support us, Tracking (my/watched), Upload track, Gallery viewer/edit, **Project point** (distance/azimuth for drawing). Document modal (e.g. freemap, OSM, attribution). Main menu with submenus (Gallery, Help, **Offline**, Tools, etc.); toolbar; toasts; context menu on map; keyboard shortcuts (including configurable layer shortcuts).
 
 ---
 
-## 13. Technical / platform
+## 14. Technical / platform
 
 - PWA: Service worker (caching, cache modes), share target (upload) for receiving shared files.
 - Drag & drop: GPX and JPEG onto map (track viewer / gallery upload).
@@ -112,13 +124,13 @@ The app is a full-featured outdoor and web map portal for [Freemap Slovakia](htt
 
 ---
 
-## 14. Documents & help
+## 15. Documents & help
 
-- In-app documents (e.g. “O združení Freemap”, “O OpenStreetMap”, “Licencia máp”); map legend (with WMS legends); link to OSM wiki; (for sk/cs) link to OSM SK community forum.
+- In-app documents (e.g. "O združení Freemap", "O OpenStreetMap", "Licencia máp"); map legend (with WMS legends); link to OSM wiki; (for sk/cs) link to OSM SK community forum.
 
 ---
 
-## 15. Analytics & ads
+## 16. Analytics & ads
 
 - Matomo (`_paq`) for events; ads for non-premium, non-embedded, non-robot users; cookie consent for analytics.
 
