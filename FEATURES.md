@@ -1,6 +1,6 @@
 # Freemap Slovakia Web App – Feature List
 
-Rescanned from the current codebase (fork). The app is a full-featured outdoor and web map portal for [Freemap Slovakia](https://www.freemap.sk), targeting Central Europe (hiking, cycling, skiing, etc.) with strong OpenStreetMap and i18n support.
+The app is a full-featured outdoor and web map portal for [Freemap Slovakia](https://www.freemap.sk), targeting (primarily) Central Europe (hiking, cycling, skiing, etc.) with i18n support.
 
 ---
 
@@ -123,12 +123,3 @@ Rescanned from the current codebase (fork). The app is a full-featured outdoor a
 - Matomo (`_paq`) for events; ads for non-premium, non-embedded, non-robot users; cookie consent for analytics.
 
 ---
-
-## Summary of notable updates (fork)
-
-- **WMS:** Full WMS support: integrated layers (Cadastre, Tree composition, Forest types, Geological, Hydrochemic, Cadastre orto), custom WMS layers (URL + layer picker from GetCapabilities), **WMS GetFeatureInfo** in Map details at click, WMS results in search with source and details, **WMS map legend** in legend modal, `WmsTileLayer`, `wms.ts` (GetCapabilities parsing).
-- **Details at clicked place:** Now includes **Nominatim reverse** and **WMS GetFeatureInfo** alongside Overpass; **Map details menu** to include/exclude sources (Nominatim, Overpass nearby/surrounding, each WMS layer).
-- **TMS:** Still supported for tile layers (custom and integrated); custom layers can be tile, WMS, or MapLibre.
-- **Offline:** Offline submenu with cache mode (network only/first, cache first/only), caching active, clear cache; service worker and cache API integration.
-- **Drawing:** Project point modal (distance/azimuth); Predefined drawing properties modal; tool order change (e.g. draw-points before draw-lines); line tool icon `MdPolyline`.
-- **Map layers:** Unified `layers: string[]`; layer shortcuts configurable via ShortcutRecorder in Map settings; WMS layers in base and overlay.
