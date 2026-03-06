@@ -1,21 +1,22 @@
+import { AreaInfo } from '@app/components/AreaInfo.js';
+import { DistanceInfo } from '@app/components/DistanceInfo.js';
+import { MaptilerAttribution } from '@app/components/MaptilerAttribution.js';
+import { RovasAd } from '@features/ad/components/RovasAd.js';
+import { ChangesetDetails } from '@features/changesets/components/ChangesetDetails.js';
+import { CookieConsent } from '@features/cookieConsent/components/CookieConsent.js';
+import { CreditsText } from '@features/credits/components/CreditsText.js';
+import { documentShow } from '@features/documents/model/actions.js';
+import { ElevationInfo } from '@features/elevationChart/components/ElevationInfo.js';
+import { ObjectDetails } from '@features/objects/components/ObjectDetails.js';
+import { TrackViewerDetails } from '@features/trackViewer/components/TrackViewerDetails.js';
+import { Attribution } from '@shared/components/Attribution.js';
+import { Emoji } from '@shared/components/Emoji.js';
+import { DeepPartialWithRequiredObjects } from '@shared/types/deepPartial.js';
 import { AlertLink } from 'react-bootstrap';
-import { FaGem, FaKey } from 'react-icons/fa';
-import { AreaInfo } from '../components/AreaInfo.js';
-import { Attribution } from '../components/Attribution.js';
-import { ChangesetDetails } from '../components/ChangesetDetails.js';
-import { CookieConsent } from '../components/CookieConsent.js';
-import { CreditsText } from '../components/CreditsText.js';
-import { DistanceInfo } from '../components/DistanceInfo.js';
-import { ElevationInfo } from '../components/ElevationInfo.js';
-import { MaptilerAttribution } from '../components/MaptilerAttribution.js';
-import { ObjectDetails } from '../components/ObjectDetails.js';
-import { TrackViewerDetails } from '../components/TrackViewerDetails.js';
-import { DeepPartialWithRequiredObjects } from '../deepPartial.js';
-import { Messages, addError } from './messagesInterface.js';
-import shared from './sk-shared.js';
-import { RovasAd } from '../components/RovasAd.js';
+import { FaKey } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { documentShow } from '../actions/mainActions.js';
+import { addError, Messages } from './messagesInterface.js';
+import shared from './sk-shared.js';
 
 const nf00 = new Intl.NumberFormat('sk', {
   minimumFractionDigits: 0,
@@ -274,7 +275,6 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
     ),
     infoBars: {
       dp: () => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         const dispatch = useDispatch();
         return (
           <>
@@ -299,22 +299,22 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
           </>
         );
       },
-      // ua: () => {
-      //   return (
-      //     <>
-      //       <Emoji>🇺🇦</Emoji>&ensp;
-      //       <a
-      //         href="https://donio.sk/spolocne-pre-ukrajinu"
-      //         target="_blank"
-      //         rel="noopener"
-      //       >
-      //         Spoločne pre Ukrajinu ›
-      //       </a>
-      //       &ensp;
-      //       <Emoji>🇺🇦</Emoji>
-      //     </>
-      //   );
-      // },
+      ua: () => {
+        return (
+          <>
+            <Emoji>🇺🇦</Emoji>&ensp;
+            <AlertLink
+              href="https://donio.sk/spolocne-pre-ukrajinu"
+              target="_blank"
+              rel="noopener"
+            >
+              Spoločne pre Ukrajinu ›
+            </AlertLink>
+            &ensp;
+            <Emoji>🇺🇦</Emoji>
+          </>
+        );
+      },
     },
   },
 
@@ -335,6 +335,21 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
   },
 
   gallery: {
+    stats: {
+      leaderboard: 'Rebríček',
+      country: 'Krajina',
+      perUserPerCountry: 'Fotky na autora na krajinu',
+      perUser: 'Fotky na autora',
+      more: 'Viac',
+      less: 'Menej',
+      user: 'Autor',
+      photos: 'Fotiek',
+      numberOfPhotos: 'Počet fotiek',
+      timePeriod: 'Časové obdobie',
+      allTime: 'Celý čas',
+      last3months: 'Posledné 3 mesiace',
+      last30days: 'Posledných 30 dní',
+    },
     legend: 'Legenda',
     recentTags: 'Nedávne tagy na priradenie:',
     filter: 'Filter',
@@ -1217,17 +1232,26 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
           <strong>Podporte dobrovoľníkov vytvárajúcich túto mapu!</strong>
         </p>
         <p className="mb-1">
-          Za <b>8 hodín</b> vašej dobrovoľníckej práce* alebo <b>8 €</b> získate
-          na rok:
+          Za <b>8 hodín</b> vašej{' '}
+          <a
+            href="https://rovas.app/freemap-web"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            dobrovoľníckej práce
+          </a>{' '}
+          alebo <b>8 €</b> získate na rok:
         </p>
         <ul>
           <li>odstránenie reklamného baneru</li>
-          <li>
-            prístup k <FaGem /> prémiovým mapovým vrstvám
+          <li
+            className="text-decoration-underline"
+            title="Strava Heatmap, hi-res detailed shading of Slovakia and Czechia, highest zoom levels of Outdoor Map, highest zoom levels of ortophoto maps of Slovakia and Czechia, various WMS-based maps"
+          >
+            prémiovým mapovým vrstvám
           </li>
-          <li>
-            prístup k <FaGem /> prémiovým fotkám
-          </li>
+          <li>prémiovým fotkám</li>
+          <li>multimodálne vyhľadávanie trasy</li>
         </ul>
       </>
     ),
@@ -1245,26 +1269,6 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
           </p>
         </div>
       </>
-    ),
-    commonFooter: (
-      <p className="small">
-        * Svoju dobrovoľnícku prácu dokážete vytvorením pracovných výkazov v
-        aplikácii{' '}
-        <a href="https://rovas.app/" target="rovas">
-          Rováš
-        </a>
-        . Ak ste dobrovoľníkom v projekte OSM a používate aplikáciu JOSM,
-        odporúčame zapnúť{' '}
-        <a
-          href="https://josm.openstreetmap.de/wiki/Sk%3AHelp/Plugin/RovasConnector"
-          target="rovas_connector"
-        >
-          doplnok Rovas Connector
-        </a>
-        , ktorý výkazy vytvorí za vás. Po overení výkazu dvoma používateľmi
-        získate odmenu v komunitnej mene <i>chron</i> a tú môžte použiť na
-        získanie prémiového prístupu na www.freemap.sk alebo nákup kreditov.
-      </p>
     ),
     continue: 'Pokračovať',
     success: 'Gratulujeme, získali ste prémiový prístup!',

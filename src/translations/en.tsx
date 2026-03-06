@@ -1,18 +1,19 @@
+import { AreaInfo } from '@app/components/AreaInfo.js';
+import { DistanceInfo } from '@app/components/DistanceInfo.js';
+import { MaptilerAttribution } from '@app/components/MaptilerAttribution.js';
+import { RovasAd } from '@features/ad/components/RovasAd.js';
+import { ChangesetDetails } from '@features/changesets/components/ChangesetDetails.js';
+import { CookieConsent } from '@features/cookieConsent/components/CookieConsent.js';
+import { CreditsText } from '@features/credits/components/CreditsText.js';
+import { ElevationInfo } from '@features/elevationChart/components/ElevationInfo.js';
+import { ObjectDetails } from '@features/objects/components/ObjectDetails.js';
+import { TrackViewerDetails } from '@features/trackViewer/components/TrackViewerDetails.js';
+import { Attribution } from '@shared/components/Attribution.js';
+import { Emoji } from '@shared/components/Emoji.js';
 import { AlertLink } from 'react-bootstrap';
-import { FaGem, FaKey } from 'react-icons/fa';
-import { AreaInfo } from '../components/AreaInfo.js';
-import { Attribution } from '../components/Attribution.js';
-import { ChangesetDetails } from '../components/ChangesetDetails.js';
-import { CookieConsent } from '../components/CookieConsent.js';
-import { CreditsText } from '../components/CreditsText.js';
-import { DistanceInfo } from '../components/DistanceInfo.js';
-import { ElevationInfo } from '../components/ElevationInfo.js';
-import { MaptilerAttribution } from '../components/MaptilerAttribution.js';
-import { ObjectDetails } from '../components/ObjectDetails.js';
-import { TrackViewerDetails } from '../components/TrackViewerDetails.js';
+import { FaKey } from 'react-icons/fa';
 import shared from './en-shared.js';
-import { Messages, addError } from './messagesInterface.js';
-import { RovasAd } from '../components/RovasAd.js';
+import { addError, Messages } from './messagesInterface.js';
 
 const nf00 = new Intl.NumberFormat('en', {
   minimumFractionDigits: 0,
@@ -265,19 +266,15 @@ const messages: Messages = {
       />
     ),
     infoBars: {
-      // ua: () => (
-      //   <>
-      //     <Emoji>🇺🇦</Emoji> We stand with Ukraine.{' '}
-      //     <AlertLink
-      //       href="https://bank.gov.ua/en/about/support-the-armed-forces"
-      //       target="_blank"
-      //       rel="noopener"
-      //     >
-      //       Donate to the Ukrainian Army ›
-      //     </AlertLink>{' '}
-      //     <Emoji>🇺🇦</Emoji>
-      //   </>
-      // ),
+      ua: () => (
+        <>
+          <Emoji>🇺🇦</Emoji> We stand with Ukraine.{' '}
+          <AlertLink href="https://u24.gov.ua/" target="_blank" rel="noopener">
+            Support Ukraine ›
+          </AlertLink>{' '}
+          <Emoji>🇺🇦</Emoji>
+        </>
+      ),
     },
   },
 
@@ -298,6 +295,21 @@ const messages: Messages = {
   },
 
   gallery: {
+    stats: {
+      leaderboard: 'Leaderboard',
+      country: 'Country',
+      perUserPerCountry: 'Photos per Author per Country',
+      perUser: 'Photos per Author',
+      more: 'More',
+      less: 'Less',
+      user: 'Author',
+      photos: 'Photos',
+      numberOfPhotos: 'Number of Photos',
+      timePeriod: 'Time Period',
+      allTime: 'All Time',
+      last3months: 'Last 3 Months',
+      last30days: 'Last 30 Days',
+    },
     legend: 'Legend',
     recentTags: 'Recent tags to assign:',
     filter: 'Filter',
@@ -1158,17 +1170,26 @@ const messages: Messages = {
           <strong>Support the volunteers who create this map!</strong>
         </p>
         <p className="mb-1">
-          For <b>8 hours</b> of your volunteer* work or <b>8 €</b> you will have
-          a year of access with:
+          For <b>8 hours</b> of your{' '}
+          <a
+            href="https://rovas.app/freemap-web"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            volunteer work
+          </a>{' '}
+          or <b>8 €</b> you will have a year of access with:
         </p>
         <ul>
           <li>removed ad banner</li>
-          <li>
-            access to <FaGem /> premium map layers
+          <li
+            className="text-decoration-underline"
+            title="Strava Heatmap, hi-res detailed shading of Slovakia and Czechia, highest zoom levels of Outdoor Map, highest zoom levels of ortophoto maps of Slovakia and Czechia, various WMS-based maps"
+          >
+            premium map layers
           </li>
-          <li>
-            access to <FaGem /> premium photos
-          </li>
+          <li>premium photos</li>
+          <li>multimodal routing</li>
         </ul>
       </>
     ),
@@ -1187,20 +1208,6 @@ const messages: Messages = {
           </p>
         </div>
       </>
-    ),
-    commonFooter: (
-      <p className="small">
-        * You can prove your volunteer work by creating work reports in the{' '}
-        <a href="https://rovas.app/">Rovas</a> application. If you are a
-        volunteer in the OSM project and are using the JOSM application, we
-        recommend enabling the{' '}
-        <a href="https://josm.openstreetmap.de/wiki/Help/Plugin/RovasConnector">
-          Rovas Connector plugin
-        </a>
-        , which can create reports for you. After a report is verified by two
-        users, you will receive the community currency <i>Chron</i>, which you
-        can use to obtain premium access to www.freemap.sk or purchase credits.
-      </p>
     ),
     continue: 'Continue',
     success: 'Congratulations, you have gained premium access!',

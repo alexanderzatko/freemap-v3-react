@@ -1,19 +1,20 @@
+import { AreaInfo } from '@app/components/AreaInfo.js';
+import { DistanceInfo } from '@app/components/DistanceInfo.js';
+import { MaptilerAttribution } from '@app/components/MaptilerAttribution.js';
+import { RovasAd } from '@features/ad/components/RovasAd.js';
+import { ChangesetDetails } from '@features/changesets/components/ChangesetDetails.js';
+import { CookieConsent } from '@features/cookieConsent/components/CookieConsent.js';
+import { CreditsText } from '@features/credits/components/CreditsText.js';
+import { ElevationInfo } from '@features/elevationChart/components/ElevationInfo.js';
+import { ObjectDetails } from '@features/objects/components/ObjectDetails.js';
+import { TrackViewerDetails } from '@features/trackViewer/components/TrackViewerDetails.js';
+import { Attribution } from '@shared/components/Attribution.js';
+import { Emoji } from '@shared/components/Emoji.js';
+import { DeepPartialWithRequiredObjects } from '@shared/types/deepPartial.js';
 import { AlertLink } from 'react-bootstrap';
-import { FaGem, FaKey } from 'react-icons/fa';
-import { AreaInfo } from '../components/AreaInfo.js';
-import { Attribution } from '../components/Attribution.js';
-import { ChangesetDetails } from '../components/ChangesetDetails.js';
-import { CookieConsent } from '../components/CookieConsent.js';
-import { CreditsText } from '../components/CreditsText.js';
-import { DistanceInfo } from '../components/DistanceInfo.js';
-import { ElevationInfo } from '../components/ElevationInfo.js';
-import { MaptilerAttribution } from '../components/MaptilerAttribution.js';
-import { ObjectDetails } from '../components/ObjectDetails.js';
-import { TrackViewerDetails } from '../components/TrackViewerDetails.js';
-import { DeepPartialWithRequiredObjects } from '../deepPartial.js';
+import { FaKey } from 'react-icons/fa';
 import shared from './it-shared.js';
-import { Messages, addError } from './messagesInterface.js';
-import { RovasAd } from '../components/RovasAd.js';
+import { addError, Messages } from './messagesInterface.js';
 
 const nf00 = new Intl.NumberFormat('it', {
   minimumFractionDigits: 0,
@@ -275,20 +276,16 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
       />
     ),
     infoBars: {
-      // ua: () => (
-      //   <>
-      //     <Emoji>🇺🇦</Emoji>&ensp;Siamo con l'Ucraina.{' '}
-      //     <AlertLink
-      //       href="https://bank.gov.ua/en/about/support-the-armed-forces"
-      //       target="_blank"
-      //       rel="noopener"
-      //     >
-      //       Fai una donazione all\'esercito ucraino ›
-      //     </AlertLink>
-      //     &ensp;
-      //     <Emoji>🇺🇦</Emoji>
-      //   </>
-      // ),
+      ua: () => (
+        <>
+          <Emoji>🇺🇦</Emoji>&ensp;Siamo con l'Ucraina.{' '}
+          <AlertLink href="https://u24.gov.ua/" target="_blank" rel="noopener">
+            Sostieni l’Ucraina ›
+          </AlertLink>
+          &ensp;
+          <Emoji>🇺🇦</Emoji>
+        </>
+      ),
     },
   },
 
@@ -309,6 +306,8 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
   },
 
   gallery: {
+    stats: {},
+
     legend: 'Legenda',
     filter: 'Filtro',
     showPhotosFrom: 'Vedi le foto',
@@ -1194,17 +1193,26 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
           <strong>Sostieni i volontari che creano questa mappa!</strong>
         </p>
         <p>
-          Con <b>8 ore</b> di lavoro volontario oppure <b>8 €</b> otterrai un
-          anno di accesso con:
+          Con <b>8 ore</b> di{' '}
+          <a
+            href="https://rovas.app/freemap-web"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            lavoro volontario
+          </a>{' '}
+          oppure <b>8 €</b> otterrai un anno di accesso con:
         </p>
         <ul>
           <li>rimozione del banner pubblicitario</li>
-          <li>
-            accesso ai livelli mappa <FaGem /> premium
+          <li
+            className="text-decoration-underline"
+            title="Strava Heatmap, ombreggiatura dettagliata ad alta risoluzione di Slovacchia e Cechia, livelli di zoom più alti della mappa Outdoor, livelli di zoom più alti delle mappe ortofoto di Slovacchia e Cechia, varie mappe basate su WMS"
+          >
+            livelli mappa premium
           </li>
-          <li>
-            accesso alle foto <FaGem /> premium
-          </li>
+          <li>foto premium</li>
+          <li>routing multimodale</li>
         </ul>
       </>
     ),
@@ -1223,22 +1231,6 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
           </p>
         </div>
       </>
-    ),
-    commonFooter: (
-      <p>
-        Puoi provare il tuo lavoro di volontariato creando rapporti di lavoro
-        con l'applicazione <a href="https://rovas.app/">Rovas</a>. Se sei un
-        volontario nel progetto OSM e stai utilizzando JOSM, ti raccomandiamo di
-        abilitare il{' '}
-        <a href="https://josm.openstreetmap.de/wiki/Help/Plugin/RovasConnector">
-          plugin Rovas Connector
-        </a>
-        , che può creare rapporti di lavoro per te. Dopo che un rapporto è stato
-        verificato da due utenti, riceverai la valuta comunitaria <i>Chron</i>,
-        che puoi utilizzare per ottenere l'accesso premium a www.freemap.sk o
-        acquistare crediti, che potrai usare per rimuovere gli annunci da
-        www.freemap.sk.
-      </p>
     ),
     continue: 'Continua',
     success: 'Congratulazioni, hai ottenuto l’accesso premium!',

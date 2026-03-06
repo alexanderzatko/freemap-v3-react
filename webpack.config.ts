@@ -1,17 +1,16 @@
+import { fileURLToPath } from 'node:url';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { fileURLToPath } from 'node:url';
 import path from 'path';
 import process from 'process';
 import type SassLoader from 'sass-loader';
 import type { Configuration } from 'webpack';
 import webpack from 'webpack';
-import { MarkdownDictPlugin } from './MarkdownDictPlugin.js';
-// import ESLintPlugin from 'eslint-webpack-plugin';
 import { WebpackAssetsManifest } from 'webpack-assets-manifest';
+import { MarkdownDictPlugin } from './MarkdownDictPlugin.js';
 
 import csMessages from './src/translations/cs-shared.js';
 import deMessages from './src/translations/de-shared.js';
@@ -24,6 +23,8 @@ import skMessages from './src/translations/sk-shared.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const prod = process.env['DEPLOYMENT'] && process.env['DEPLOYMENT'] !== 'dev';
+const cssModuleRegex = /\.module\.css$/;
+const scssModuleRegex = /\.module\.scss$/;
 
 const htmlPluginProps = {
   filename: 'index.html',
@@ -46,7 +47,7 @@ const config: Configuration = {
   mode: prod ? 'production' : 'development',
   context: path.resolve(__dirname, 'src'),
   entry: {
-    main: './index.tsx',
+    main: './app/index.tsx',
     sw: './sw/sw.ts',
     'upload-sw': './sw/upload-sw.ts',
   },
@@ -63,6 +64,13 @@ const config: Configuration = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      '@app': path.resolve(__dirname, 'src/app'),
+      '@shared': path.resolve(__dirname, 'src/shared'),
+      '@features': path.resolve(__dirname, 'src/features'),
+      '@osm': path.resolve(__dirname, 'src/osm'),
+    },
     extensionAlias: {
       '.js': ['.js', '.ts', '.tsx'],
     },
@@ -108,7 +116,19 @@ const config: Configuration = {
                 } satisfies MiniCssExtractPlugin.LoaderOptions,
               }
             : 'style-loader',
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                auto: scssModuleRegex,
+                namedExport: false,
+                exportLocalsConvention: 'as-is',
+                localIdentName: prod
+                  ? '[hash:base64:6]'
+                  : '[path][name]__[local]',
+              },
+            },
+          },
           {
             loader: 'sass-loader',
             options: {
@@ -138,7 +158,19 @@ const config: Configuration = {
                 } satisfies MiniCssExtractPlugin.LoaderOptions,
               }
             : 'style-loader',
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                auto: cssModuleRegex,
+                namedExport: false,
+                exportLocalsConvention: 'as-is',
+                localIdentName: prod
+                  ? '[hash:base64:6]'
+                  : '[path][name]__[local]',
+              },
+            },
+          },
         ],
       },
       {

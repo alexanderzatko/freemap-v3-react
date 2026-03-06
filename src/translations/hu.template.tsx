@@ -1,19 +1,20 @@
+import { AreaInfo } from '@app/components/AreaInfo.js';
+import { DistanceInfo } from '@app/components/DistanceInfo.js';
+import { MaptilerAttribution } from '@app/components/MaptilerAttribution.js';
+import { RovasAd } from '@features/ad/components/RovasAd.js';
+import { ChangesetDetails } from '@features/changesets/components/ChangesetDetails.js';
+import { CookieConsent } from '@features/cookieConsent/components/CookieConsent.js';
+import { CreditsText } from '@features/credits/components/CreditsText.js';
+import { ElevationInfo } from '@features/elevationChart/components/ElevationInfo.js';
+import { ObjectDetails } from '@features/objects/components/ObjectDetails.js';
+import { TrackViewerDetails } from '@features/trackViewer/components/TrackViewerDetails.js';
+import { Attribution } from '@shared/components/Attribution.js';
+import { Emoji } from '@shared/components/Emoji.js';
+import { DeepPartialWithRequiredObjects } from '@shared/types/deepPartial.js';
 import { AlertLink } from 'react-bootstrap';
-import { FaGem, FaKey } from 'react-icons/fa';
-import { AreaInfo } from '../components/AreaInfo.js';
-import { Attribution } from '../components/Attribution.js';
-import { ChangesetDetails } from '../components/ChangesetDetails.js';
-import { CookieConsent } from '../components/CookieConsent.js';
-import { CreditsText } from '../components/CreditsText.js';
-import { DistanceInfo } from '../components/DistanceInfo.js';
-import { ElevationInfo } from '../components/ElevationInfo.js';
-import { MaptilerAttribution } from '../components/MaptilerAttribution.js';
-import { ObjectDetails } from '../components/ObjectDetails.js';
-import { TrackViewerDetails } from '../components/TrackViewerDetails.js';
-import { DeepPartialWithRequiredObjects } from '../deepPartial.js';
+import { FaKey } from 'react-icons/fa';
 import shared from './hu-shared.js';
-import { Messages, addError } from './messagesInterface.js';
-import { RovasAd } from '../components/RovasAd.js';
+import { addError, Messages } from './messagesInterface.js';
 
 const nf00 = new Intl.NumberFormat('hu', {
   minimumFractionDigits: 0,
@@ -265,20 +266,16 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
     copyright: 'Szerzői jog',
 
     infoBars: {
-      // ua: () => (
-      //   <>
-      //     <Emoji>🇺🇦</Emoji>&ensp;Ukrajnával állunk.{' '}
-      //     <AlertLink
-      //       href="https://bank.gov.ua/en/about/support-the-armed-forces"
-      //       target="_blank"
-      //       rel="noopener"
-      //     >
-      //       Adományozás az ukrán hadseregnek ›
-      //     </AlertLink>
-      //     &ensp;
-      //     <Emoji>🇺🇦</Emoji>
-      //   </>
-      // ),
+      ua: () => (
+        <>
+          <Emoji>🇺🇦</Emoji>&ensp;Ukrajna mellett állunk.{' '}
+          <AlertLink href="https://u24.gov.ua/" target="_blank" rel="noopener">
+            Ukrajna támogatása ›
+          </AlertLink>
+          &ensp;
+          <Emoji>🇺🇦</Emoji>
+        </>
+      ),
     },
 
     cookieConsent: () => (
@@ -293,7 +290,7 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
   ad: {
     self: (email) => (
       <>
-        Szeretnéd, ha itt lenne a saját hirdetésed? Ne habozz kapcsolatba lépni
+        Szeretnéd, ha a saját hirdetésed lenne itt? Ne habozz kapcsolatba lépni
         velünk a következő címen: {email}.
       </>
     ),
@@ -307,6 +304,8 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
   },
 
   gallery: {
+    stats: {},
+
     legend: 'Jelmagyarázat',
     filter: 'Szűrő',
     showPhotosFrom: 'Fényképek megtekintése',
@@ -1238,17 +1237,26 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
           </strong>
         </p>
         <p className="mb-1">
-          <b>8 óra</b> önkéntes munkáért* vagy <b>8 €</b> összegért kap egy
-          évre:
+          <b>8 óra</b>{' '}
+          <a
+            href="https://rovas.app/freemap-web"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            önkéntes munkáért
+          </a>{' '}
+          vagy <b>8 €</b> összegért a következőket kaphatod egy évre:
         </p>
         <ul>
           <li>reklámszalag eltávolítása</li>
-          <li>
-            hozzáférés a <FaGem /> prémium térképrétegekhez
+          <li
+            className="text-decoration-underline"
+            title="Strava Heatmap, Szlovákia és Csehország nagy felbontású részletes domborzatárnyékolása, az Outdoor Map túratérkép legnagyobb nagyítási szintjei, Szlovákia és Csehország ortofotóinak legnagyobb nagyítási szintjei, különféle WMS-alapú térképek"
+          >
+            prémium térképrétegek
           </li>
-          <li>
-            hozzáférés a <FaGem /> prémium fényképekhez
-          </li>
+          <li>prémium fényképek</li>
+          <li>multimodális útvonaltervezés</li>
         </ul>
       </>
     ),
@@ -1268,20 +1276,6 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
         </div>
       </>
     ),
-    commonFooter: (
-      <p className="small">
-        * Az önkéntes munkát munkajelentések létrehozásával igazolhatod a{' '}
-        <a href="https://rovas.app/">Rovas</a> alkalmazásban. Ha az OSM projekt
-        önkéntese vagy, és a JOSM alkalmazást használod, javasoljuk a{' '}
-        <a href="https://josm.openstreetmap.de/wiki/Help/Plugin/RovasConnector">
-          Rovas Connector bővítmény
-        </a>
-        engedélyezését, amely jelentéseket tud készíteni helyetted. Ha egy
-        jelentést két felhasználó jóváhagy, közösségi valutát, <i>Chron</i>-t
-        kapsz, amelyet felhasználhatsz prémium hozzáférés megszerzéséhez a
-        www.freemap.sk oldalon, vagy krediteket is vásárolhatsz.
-      </p>
-    ),
     continue: 'Folytatás',
     success: 'Gratulálunk, megszerezted a prémium hozzáférést!',
     becomePremium: 'Prémium hozzáférés megszerzése',
@@ -1291,11 +1285,11 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
       </>
     ),
     premiumOnly: 'Csak prémium hozzáféréssel érhető el.',
-    alreadyPremium: 'Már prémium hozzáféréssel rendelkezel.',
+    alreadyPremium: 'Már rendelkezel prémium hozzáféréssel.',
   },
 
   credits: {
-    buyCredits: 'Kreditek vásárlása',
+    buyCredits: 'Kredit vásárlása',
     amount: 'Kreditek',
     credits: 'kredit',
     buy: 'Vásárlás',
@@ -1309,7 +1303,7 @@ const messages: DeepPartialWithRequiredObjects<Messages> = {
         Van {amount}{' '}
         {explainCredits ? (
           <CreditsText
-            credits="kredited"
+            credits="kreditjeid"
             help="A krediteket felhasználhatod [offline térképek exportjára]."
           />
         ) : (

@@ -1,16 +1,16 @@
-import { JSX, ReactElement, ReactNode } from 'react';
-import { Changeset } from '../actions/changesetsActions.js';
+import { HttpError } from '@app/httpRequest.js';
+import { Changeset } from '@features/changesets/model/actions.js';
+import { ElevationInfoBaseProps } from '@features/elevationChart/components/ElevationInfo.js';
 import {
   GalleryColorizeBy,
   GalleryListOrder,
-} from '../actions/galleryActions.js';
-import { ExportableLayer } from '../actions/mainActions.js';
-import { RoutingMode } from '../actions/routePlannerActions.js';
-import { SearchResult, SearchSource } from '../actions/searchActions.js';
-import { ElevationInfoBaseProps } from '../components/ElevationInfo.js';
-import { DeepPartial } from '../deepPartial.js';
-import { HttpError } from '../httpRequest.js';
-import type { TransportTypeMsgKey } from '../transportTypeDefs.js';
+} from '@features/gallery/model/actions.js';
+import { ExportableLayer } from '@features/mapExport/model/actions.js';
+import { RoutingMode } from '@features/routePlanner/model/actions.js';
+import { SearchResult, SearchSource } from '@features/search/model/actions.js';
+import type { TransportTypeMsgKey } from '@shared/transportTypeDefs.js';
+import { DeepPartial } from '@shared/types/deepPartial.js';
+import { JSX, ReactElement, ReactNode } from 'react';
 
 type Err = { err: string };
 
@@ -213,6 +213,21 @@ export type Messages = {
     rovas: () => JSX.Element;
   };
   gallery: {
+    stats: {
+      leaderboard: string;
+      country: string;
+      perUserPerCountry: string;
+      perUser: string;
+      more: string;
+      less: string;
+      user: string;
+      photos: string;
+      numberOfPhotos: string;
+      timePeriod: string;
+      allTime: string;
+      last3months: string;
+      last30days: string;
+    };
     legend: string;
     recentTags: string;
     filter: string;
@@ -767,7 +782,6 @@ export type Messages = {
     title: string;
     commonHeader: ReactNode;
     stepsForAnonymous: ReactNode;
-    commonFooter: ReactNode;
     continue: string;
     success: string;
     becomePremium: string;
