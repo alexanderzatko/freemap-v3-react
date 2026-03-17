@@ -866,12 +866,7 @@ function handleGallery(
 
   a = query['gallery-taken-at-to'];
 
-  let qTakenAtTo = typeof a === 'string' ? new Date(a) : undefined;
-
-  // When only "from" date is in the URL, treat it as "on this exact day"
-  if (qTakenAtFrom && !qTakenAtTo && !Number.isNaN(qTakenAtFrom.getTime())) {
-    qTakenAtTo = new Date(qTakenAtFrom);
-  }
+  const qTakenAtTo = typeof a === 'string' ? new Date(a) : undefined;
 
   a = query['gallery-created-at-from'];
 
